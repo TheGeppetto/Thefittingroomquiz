@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Personality Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header-title">Discover Your Fashion Personality</h1>
+    </header>
+    <main class="main-container">
+        <section id="quiz" class="quiz-container">
+            <div id="question-container" class="question-container">
+                <!-- Questions will load dynamically here -->
+            </div>
+            <button id="next-btn" class="btn primary-btn" style="display: none;">Next</button>
+        </section>
+        <section id="result" class="result-container" style="display: none;">
+            <div class="result-content">
+                <h2 class="result-title">Your Fashion Personality</h2>
+                <p id="result-text" class="result-type"></p>
+                <p id="result-description" class="result-description"></p>
+                <div class="share-container">
+                    <button id="download-btn" class="btn secondary-btn">Download Result</button>
+                    <button id="copy-link-btn" class="btn secondary-btn">Copy Shareable Link</button>
+                </div>
+                <p class="thank-you-text">
+                    Thank you for taking the quiz! We'd love your feedback.
+                    Please fill out our <a href="https://example.com/survey" target="_blank" class="survey-link">short survey</a>.
+                </p>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <p>© 2024 Fashion Quiz. All rights reserved.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
