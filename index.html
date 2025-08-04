@@ -3,39 +3,899 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fashion Personality Quiz</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Interactive VUCA Prime Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Brush+Script+MT&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .scene {
+            display: none;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        .scene.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+        .btn-primary:disabled, .btn-secondary:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+        .icon-wrapper {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background-color: #2563eb;
+            height: 100%;
+            transition: width 0.5s ease-in-out;
+            border-radius: 9999px;
+        }
+        .option-btn {
+            border: 2px solid #e5e7eb;
+            transition: all 0.2s ease-in-out;
+        }
+        .option-btn.selected {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+        .option-btn.correct {
+            border-color: #16a34a;
+            background-color: #f0fdf4;
+        }
+        .option-btn.incorrect {
+            border-color: #dc2626;
+            background-color: #fef2f2;
+        }
+        #certificate {
+            border: 10px solid #2563eb;
+            background-color: #f9fafb;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #2563eb;
+            animation: spin 1s ease infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #settings-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 50;
+        }
+        #voice-select-panel {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+    </style>
 </head>
-<body>
-    <header class="header">
-        <h1 class="header-title">Discover Your Fashion Personality</h1>
-    </header>
-    <main class="main-container">
-        <section id="quiz" class="quiz-container">
-            <div id="question-container" class="question-container">
-                <!-- Questions will load dynamically here -->
+<body class="bg-gray-50 text-gray-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="presentation-container" class="w-full max-w-4xl mx-auto relative">
+
+        <!-- Settings Panel -->
+        <div id="settings-panel">
+            <button onclick="toggleSettings()" class="p-2 rounded-full hover:bg-gray-200 transition-colors">
+                <i data-lucide="settings"></i>
+            </button>
+            <div id="voice-select-panel">
+                <label for="voice-select" class="block text-sm font-medium text-gray-700 mb-2">Select a Voice:</label>
+                <select id="voice-select" class="w-full p-2 border border-gray-300 rounded-md"></select>
             </div>
-            <button id="next-btn" class="btn primary-btn" style="display: none;">Next</button>
-        </section>
-        <section id="result" class="result-container" style="display: none;">
-            <div class="result-content">
-                <h2 class="result-title">Your Fashion Personality</h2>
-                <p id="result-text" class="result-type"></p>
-                <p id="result-description" class="result-description"></p>
-                <div class="share-container">
-                    <button id="download-btn" class="btn secondary-btn">Download Result</button>
-                    <button id="copy-link-btn" class="btn secondary-btn">Copy Shareable Link</button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar-container mb-6 mt-16">
+            <div id="progressBar" class="progress-bar" style="width: 0%;"></div>
+        </div>
+
+        <!-- Scene 0: Welcome -->
+        <div id="scene-0" class="scene active flex-col items-center justify-center text-center p-8">
+            <div class="card p-8 md:p-12 w-full">
+                <div class="icon-wrapper bg-blue-100 text-blue-600 mx-auto">
+                    <i data-lucide="zap"></i>
                 </div>
-                <p class="thank-you-text">
-                    Thank you for taking the quiz! We'd love your feedback.
-                    Please fill out our <a href="https://example.com/survey" target="_blank" class="survey-link">short survey</a>.
-                </p>
+                <h1 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Thriving in a Turbulent World</h1>
+                <p class="text-lg text-gray-600 mb-8">An interactive journey from VUCA to VUCA Prime.</p>
+                <div class="navigation-controls mt-8 flex justify-center space-x-4">
+                     <button onclick="playSceneAudio(0, this)" class="btn btn-secondary"><i data-lucide="play-circle" class="mr-2 h-5 w-5"></i>Play Narration</button>
+                    <button onclick="nextScene()" class="btn btn-primary" disabled><i data-lucide="arrow-right" class="mr-2 h-5 w-5"></i>Start</button>
+                </div>
             </div>
-        </section>
-    </main>
-    <footer class="footer">
-        <p>© TheFittingRoom. All rights reserved.</p>
-    </footer>
-    <script src="script.js"></script>
+        </div>
+
+        <!-- Scene 1: Old VUCA -->
+        <div id="scene-1" class="scene flex-col items-center justify-center text-center p-8">
+            <div class="card p-8 md:p-12 w-full">
+                <h2 class="text-2xl md:text-3xl font-bold mb-2 text-gray-900">The "Old" VUCA</h2>
+                <p class="text-gray-600 mb-8">A framework for describing a world that feels overwhelming.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+                    <div class="p-6 bg-gray-100 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2 flex items-center"><i data-lucide="bar-chart-3" class="mr-2 text-red-500"></i>Volatility</h3>
+                        <p class="text-sm text-gray-600">The nature, speed, and magnitude of change that is not in a predictable pattern.</p>
+                    </div>
+                    <div class="p-6 bg-gray-100 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2 flex items-center"><i data-lucide="cloud-fog" class="mr-2 text-yellow-500"></i>Uncertainty</h3>
+                        <p class="text-sm text-gray-600">The lack of predictability in issues and events. The future is foggy.</p>
+                    </div>
+                    <div class="p-6 bg-gray-100 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2 flex items-center"><i data-lucide="git-fork" class="mr-2 text-purple-500"></i>Complexity</h3>
+                        <p class="text-sm text-gray-600">The overwhelming number of interconnected parts and variables in a system.</p>
+                    </div>
+                    <div class="p-6 bg-gray-100 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2 flex items-center"><i data-lucide="waypoints" class="mr-2 text-gray-500"></i>Ambiguity</h3>
+                        <p class="text-sm text-gray-600">The lack of clarity or the existence of multiple meanings for a situation.</p>
+                    </div>
+                </div>
+                <div class="navigation-controls mt-8 flex justify-center space-x-4">
+                    <button onclick="prevScene()" class="btn btn-secondary"><i data-lucide="arrow-left" class="mr-2 h-5 w-5"></i>Back</button>
+                    <button onclick="playSceneAudio(1, this)" class="btn btn-secondary"><i data-lucide="play-circle" class="mr-2 h-5 w-5"></i>Play Narration</button>
+                    <button onclick="nextScene()" class="btn btn-primary" disabled>Next<i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scene 2: The Flip -->
+        <div id="scene-2" class="scene flex-col items-center justify-center text-center p-8">
+            <div class="card p-8 md:p-12 w-full">
+                <div class="icon-wrapper bg-green-100 text-green-600 mx-auto">
+                    <i data-lucide="refresh-cw"></i>
+                </div>
+                <h2 class="text-3xl font-bold mb-4 text-gray-900">Flipping the Script on VUCA</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">Who wants to just survive? We want to thrive. We're reframing VUCA from a description of chaos into a toolkit for leadership.</p>
+                <div class="navigation-controls mt-8 flex justify-center space-x-4">
+                    <button onclick="prevScene()" class="btn btn-secondary"><i data-lucide="arrow-left" class="mr-2 h-5 w-5"></i>Back</button>
+                    <button onclick="playSceneAudio(2, this)" class="btn btn-secondary"><i data-lucide="play-circle" class="mr-2 h-5 w-5"></i>Play Narration</button>
+                    <button onclick="nextScene()" class="btn btn-primary" disabled>Next<i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scene 3: New VUCA (VUCA Prime) -->
+        <div id="scene-3" class="scene flex-col items-center justify-center p-8">
+            <div class="card p-8 md:p-12 w-full">
+                <h2 class="text-2xl md:text-3xl font-bold mb-2 text-center text-gray-900">Introducing VUCA Prime</h2>
+                <p class="text-gray-600 mb-8 text-center">Your guide for purpose, empathy, focus, and flexibility.</p>
+                <div class="space-y-8">
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="icon-wrapper bg-blue-100 text-blue-600 flex-shrink-0"><i data-lucide="compass"></i></div>
+                        <div class="text-center md:text-left">
+                            <h3 class="text-xl font-bold">From <span class="text-red-500">Volatility</span> to <span class="text-blue-500">VISION</span></h3>
+                            <p class="text-gray-600 mt-1">Counteract sudden change with a clear direction and a shared purpose. Your Vision is your compass in the chaos.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="icon-wrapper bg-yellow-100 text-yellow-600 flex-shrink-0"><i data-lucide="users"></i></div>
+                        <div class="text-center md:text-left">
+                            <h3 class="text-xl font-bold">From <span class="text-yellow-500">Uncertainty</span> to <span class="text-yellow-600">UNDERSTANDING</span></h3>
+                            <p class="text-gray-600 mt-1">Move beyond data to emotional intelligence and context. See the bigger picture and respond wisely, not blindly.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="icon-wrapper bg-purple-100 text-purple-600 flex-shrink-0"><i data-lucide="microscope"></i></div>
+                        <div class="text-center md:text-left">
+                            <h3 class="text-xl font-bold">From <span class="text-purple-500">Complexity</span> to <span class="text-purple-600">CLARITY</span></h3>
+                            <p class="text-gray-600 mt-1">Simplify, focus, and have the courage to say "no". Bring crystal-clear expectations to a world drowning in data.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="icon-wrapper bg-green-100 text-green-600 flex-shrink-0"><i data-lucide="move"></i></div>
+                        <div class="text-center md:text-left">
+                            <h3 class="text-xl font-bold">From <span class="text-gray-500">Ambiguity</span> to <span class="text-green-500">AGILITY</span></h3>
+                            <p class="text-gray-600 mt-1">Develop your adaptive capacity. Pivot fast, learn as you go, and make imperfect progress confidently.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="navigation-controls mt-10 flex justify-center space-x-4">
+                    <button onclick="prevScene()" class="btn btn-secondary"><i data-lucide="arrow-left" class="mr-2 h-5 w-5"></i>Back</button>
+                    <button onclick="playSceneAudio(3, this)" class="btn btn-secondary"><i data-lucide="play-circle" class="mr-2 h-5 w-5"></i>Play Narration</button>
+                    <button onclick="nextScene()" class="btn btn-primary" disabled>Next<i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scene 4: Mindset Shift -->
+        <div id="scene-4" class="scene flex-col items-center justify-center text-center p-8">
+            <div class="card p-8 md:p-12 w-full">
+                <div class="icon-wrapper bg-indigo-100 text-indigo-600 mx-auto">
+                    <i data-lucide="brain-circuit"></i>
+                </div>
+                <h2 class="text-3xl font-bold mb-4 text-gray-900">It's a Fundamental Mindset Shift</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">Instead of feeling tossed around by chaos, you become more anchored, aware, clear, and flexible. This is real leadership.</p>
+                 <div class="mt-8 text-center">
+                    <p class="text-gray-700 font-semibold">“In the midst of chaos, there is also opportunity.”</p>
+                    <p class="text-gray-500 text-sm mt-2">- Sun Tzu, <em>The Art of War</em></p>
+                </div>
+                <div class="navigation-controls mt-8 flex justify-center space-x-4">
+                    <button onclick="prevScene()" class="btn btn-secondary"><i data-lucide="arrow-left" class="mr-2 h-5 w-5"></i>Back</button>
+                    <button onclick="playSceneAudio(4, this)" class="btn btn-secondary"><i data-lucide="play-circle" class="mr-2 h-5 w-5"></i>Play Narration</button>
+                    <button onclick="nextScene()" class="btn btn-primary" disabled>Make it Actionable<i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scene 5: Action Plan -->
+        <div id="scene-5" class="scene flex-col items-center justify-center text-center p-8">
+            <div class="card p-8 md:p-12 w-full">
+                <div class="icon-wrapper bg-blue-100 text-blue-600 mx-auto">
+                    <i data-lucide="flag"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-900">What's Your Starting Point?</h2>
+                <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Which of the New VUCA traits will be your primary focus for development in the next quarter?</p>
+                <div id="poll-options" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto">
+                    <button onclick="selectTrait('Vision')" class="p-4 border rounded-lg hover:bg-blue-50 hover:border-blue-500 transition-all">Vision</button>
+                    <button onclick="selectTrait('Understanding')" class="p-4 border rounded-lg hover:bg-yellow-50 hover:border-yellow-500 transition-all">Understanding</button>
+                    <button onclick="selectTrait('Clarity')" class="p-4 border rounded-lg hover:bg-purple-50 hover:border-purple-500 transition-all">Clarity</button>
+                    <button onclick="selectTrait('Agility')" class="p-4 border rounded-lg hover:bg-green-50 hover:border-green-500 transition-all">Agility</button>
+                </div>
+                <div id="action-plan-section" class="hidden mt-8 text-left">
+                    <h3 class="text-xl font-bold text-center mb-4">My Action Plan for <span id="selected-trait-title" class="text-blue-600"></span></h3>
+                    <p class="text-gray-600 mb-4 text-center">Describe one specific, actionable step you will take to develop this trait.</p>
+                    <textarea id="action-plan-text" class="w-full p-2 border rounded-lg h-24" placeholder="e.g., 'I will start each week by reviewing my team's core objectives to ensure my tasks align with our Vision.'"></textarea>
+                    <div class="text-center mt-4">
+                        <button id="submit-plan-btn" onclick="submitActionPlan()" class="btn btn-primary">Submit Plan & Get AI Feedback</button>
+                    </div>
+                </div>
+                <div id="ai-feedback-section" class="hidden mt-8 text-left">
+                     <div id="spinner-container" class="flex justify-center items-center flex-col">
+                        <div class="spinner"></div>
+                        <p class="mt-2 text-gray-600">Our AI coach is analyzing your plan...</p>
+                    </div>
+                    <div id="feedback-content" class="hidden">
+                        <h3 class="text-xl font-bold text-center mb-4">AI-Powered Suggestions</h3>
+                        <div id="ai-feedback-text" class="p-4 bg-gray-100 rounded-lg text-gray-700"></div>
+                        <div class="text-center mt-6">
+                            <button onclick="startQuiz()" class="btn btn-primary">Continue to Quiz</button>
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-8 flex justify-center space-x-4">
+                    <button onclick="prevScene()" class="btn btn-secondary"><i data-lucide="arrow-left" class="mr-2 h-5 w-5"></i>Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scene 6: Quiz -->
+        <div id="scene-6" class="scene flex-col items-center justify-center p-8">
+            <div class="card p-8 md:p-12 w-full">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-center text-gray-900">Knowledge Check</h2>
+                <div id="quiz-container"></div>
+                <div id="quiz-feedback" class="mt-4 text-center font-semibold"></div>
+                <div class="mt-6 flex justify-center">
+                     <button id="next-question-btn" onclick="nextQuestion()" class="btn btn-primary hidden">Next Question</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scene 7: Scenario Intro -->
+        <div id="scene-7" class="scene flex-col items-center justify-center text-center p-8">
+            <div class="card p-8 md:p-12 w-full">
+                 <div class="icon-wrapper bg-red-100 text-red-600 mx-auto">
+                    <i data-lucide="alert-triangle"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold mb-2 text-gray-900">Application Scenarios</h2>
+                <p class="text-gray-600 mb-6 max-w-2xl mx-auto">Knowledge is one thing, application is another. In the following section, you will face four tricky real-world scenarios. For each one, choose the VUCA Prime principle that represents the most effective *first* action to take. Read carefully!</p>
+                <div class="navigation-controls mt-8 flex justify-center space-x-4">
+                    <button onclick="playSceneAudio(5, this)" class="btn btn-secondary"><i data-lucide="play-circle" class="mr-2 h-5 w-5"></i>Play Narration</button>
+                    <button onclick="startScenarios()" class="btn btn-primary" disabled>Begin Scenarios</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scenario Scenes Container -->
+        <div id="scenario-scenes"></div>
+
+        <!-- Scene 8: Results -->
+        <div id="scene-8" class="scene flex-col items-center justify-center text-center p-8">
+            <div class="card p-8 md:p-12 w-full">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-900">Your Results</h2>
+                <p class="text-lg text-gray-600 mb-6">You scored <span id="final-score" class="font-bold text-blue-600"></span>% on the assessment.</p>
+                <div id="certificate-unlocked" class="hidden">
+                    <div class="icon-wrapper bg-green-100 text-green-600 mx-auto">
+                        <i data-lucide="award"></i>
+                    </div>
+                    <p class="text-xl font-semibold text-green-700 mb-4">Congratulations! You've passed.</p>
+                    <p class="text-gray-600 mb-6">Please enter your full name as you'd like it to appear on the certificate.</p>
+                    <input type="text" id="learner-name" class="w-full max-w-md mx-auto p-2 border rounded-lg mb-6" placeholder="e.g., Jane Doe">
+                    <button onclick="generateCertificate()" class="btn btn-primary">Generate Certificate</button>
+                </div>
+                <div id="certificate-locked" class="hidden">
+                    <div class="icon-wrapper bg-red-100 text-red-600 mx-auto">
+                        <i data-lucide="x-circle"></i>
+                    </div>
+                    <p class="text-xl font-semibold text-red-700 mb-4">Nice try!</p>
+                    <p class="text-gray-600 mb-6">A score of 80% or higher is required to earn a certificate. Feel free to try again!</p>
+                    <button onclick="restart()" class="btn btn-secondary mt-4">Restart Course</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scene 9: Certificate -->
+        <div id="scene-9" class="scene flex-col items-center justify-center p-2 md:p-8">
+            <div class="w-full max-w-4xl">
+                <div id="certificate" class="card p-6 md:p-10 w-full text-center">
+                    <div class="flex justify-between items-start">
+                         <img src="https://placehold.co/100x40/000000/FFFFFF?text=Elev8" alt="Elev8 Logo" class="h-10">
+                         <div class="icon-wrapper bg-yellow-400 text-white mb-2 -mt-4">
+                            <i data-lucide="award" class="w-8 h-8"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-4xl font-bold text-gray-800 mb-2" style="font-family: 'Times New Roman', serif;">Elev8</h1>
+                    <p class="text-lg text-gray-500 mb-6">Certificate of Completion</p>
+                    <p class="text-sm text-gray-600 mb-4">This certificate is proudly presented to</p>
+                    <h2 id="cert-name" class="text-3xl md:text-4xl font-bold text-blue-600 mb-6" style="font-family: 'Brush Script MT', cursive;"></h2>
+                    <p class="text-sm text-gray-600 mb-4">for successfully completing the course</p>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-6">Beatcamp : V.U.C.A Concept</h3>
+                    <div class="flex justify-between items-center text-xs text-gray-500 mt-8 border-t pt-4">
+                        <div>
+                            <p><strong>Date of Completion:</strong> <span id="cert-date"></span></p>
+                        </div>
+                        <div>
+                            <p><strong>Serial Number:</strong> <span id="cert-serial"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 text-center">
+                    <button onclick="downloadCertificate()" class="btn btn-primary">
+                        <i data-lucide="download" class="mr-2 h-5 w-5"></i>
+                        Download Certificate
+                    </button>
+                    <button onclick="restart()" class="btn btn-secondary ml-4">Start Over</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        // --- State Management ---
+        let currentScene = 0;
+        let quizScore = 0;
+        let scenarioScore = 0;
+        let currentQuestionIndex = 0;
+        let currentScenarioIndex = 0;
+        let selectedTrait = '';
+        let scenes = document.querySelectorAll('.scene');
+        let totalScenes = scenes.length;
+        const progressBar = document.getElementById('progressBar');
+        const synth = window.speechSynthesis;
+        let currentUtterance = null;
+        let voices = []; // To store available voices
+        const voiceSelect = document.getElementById('voice-select');
+
+        const sceneScripts = [
+            `If you've ever felt that kind of dizzying sensation, wondering how to truly thrive, not just survive, in today's professional world, you are definitely not alone. It's a lot to navigate.`,
+            `The speed, the information, it feels relentless sometimes. For a long time, the way we tried to make sense of this chaos was the term VUCA. Originating from the US military, VUCA stands for: Volatility, Uncertainty, Complexity, and Ambiguity. It was fundamentally about reacting. It was great at diagnosing the chaos, but it left you feeling passive, like you just had to brace for impact.`,
+            `The shift we're exploring today is so important. Who wants to just survive? We want to thrive, and maybe even lead through it. We are flipping the script on VUCA, reframing it as a toolkit for stepping up, not shutting down. How do you shift from just enduring instability to actually unlocking your own potential within it?`,
+            `Let's start with V for Vision. To counter Volatility. Vision is your compass in the chaos. Next is U for Understanding, to counter Uncertainty. It's about emotional intelligence and seeing the bigger picture. Then C for Clarity, to counter Complexity. It means simplifying things and focusing on what matters most. And finally, A for Agility, to counter Ambiguity. It's about pivoting fast and learning as you go.`,
+            `This new VUCA is a fundamental mindset shift. Instead of feeling tossed around by chaos, you become more anchored, aware, clearer, and more flexible. That's real leadership. As the strategist Sun-Tzu said, 'In the midst of chaos, there is also opportunity.'`,
+            `Knowledge is one thing, application is another. In the following section, you will face four tricky real-world scenarios. For each one, choose the VUCA Prime principle that represents the most effective first action to take. Read carefully!`
+        ];
+        
+        const quizQuestions = [
+            { question: "Which VUCA Prime element is the direct antidote to 'Volatility'?", options: ["Clarity", "Vision", "Agility", "Understanding"], answer: "Vision" },
+            { question: "'Complexity' in the old model is best countered by which new element?", options: ["Understanding", "Vision", "Clarity", "Agility"], answer: "Clarity" },
+            { question: "To combat 'Uncertainty', a leader should focus on developing...", options: ["Agility", "Understanding", "Vision", "Clarity"], answer: "Understanding" },
+            { question: "'Agility' is the leadership response to which challenge?", options: ["Ambiguity", "Complexity", "Volatility", "Uncertainty"], answer: "Ambiguity" },
+            { question: "The 'Old VUCA' framework is best described as...", options: ["Proactive and empowering", "A tool for strategic planning", "Reactive and diagnostic", "A project management methodology"], answer: "Reactive and diagnostic" }
+        ];
+        
+        const scenarios = [
+            {
+                title: "The Volatility Challenge",
+                problem: "Your star player on a critical project resigns unexpectedly, just two weeks before a major client deadline. The team's morale plummets, and panic about the workload is setting in. What is your most effective FIRST action as the team lead?",
+                options: [
+                    { principle: "Agility", text: "Immediately start reassigning all the departed member's tasks to the remaining team members to ensure all work is covered." },
+                    { principle: "Vision", text: "Call a quick 15-minute huddle to reaffirm the project's single most important goal, remind the team WHY it matters, and collaboratively identify the absolute essential tasks to meet the deadline." },
+                    { principle: "Clarity", text: "Demand a detailed report of all the work the departed member had in progress before making any decisions." },
+                    { principle: "Understanding", text: "Schedule one-on-one meetings with each team member to discuss their feelings about the situation and their capacity." }
+                ],
+                answer: "Vision",
+                feedback: "Correct. While the other actions have value, the immediate priority in a volatile crisis is to re-anchor the team with VISION. Reaffirming the 'why' stabilizes panic and provides a filter to ruthlessly prioritize, preventing the team from drowning in a reactive scramble."
+            },
+            {
+                title: "The Uncertainty Challenge",
+                problem: "A new AI technology is emerging that could disrupt your industry in the next 2-3 years. There's a lot of hype and conflicting reports, but no clear data on its actual impact yet. Competitors are making bold, expensive moves.",
+                options: [
+                    { principle: "Understanding", text: "Form a small, cross-functional 'listening post' team to monitor the tech, interview early adopters in other fields, and provide regular, high-level briefings on its potential context and implications." },
+                    { principle: "Vision", text: "Immediately pivot the company's entire five-year vision to focus on this new technology to show you are forward-thinking." },
+                    { principle: "Agility", text: "Launch several small-scale pilot projects using the technology, even without a clear strategic goal, just to be seen as taking action." },
+                    { principle: "Clarity", text: "Ignore the hype until there is a clear, data-proven business case and a documented report on its ROI." }
+                ],
+                answer: "Understanding",
+                feedback: "Excellent choice. In the face of uncertainty, the goal isn't to have all the answers, but to deepen your UNDERSTANDING. A 'listening post' is a low-cost, high-learning way to gather context and see the bigger picture, allowing for a wiser response later, rather than a knee-jerk reaction."
+            },
+            {
+                title: "The Complexity Challenge",
+                problem: "Your project has ballooned. There are dozens of stakeholders with conflicting requirements, the technical dependencies are a tangled mess, and the team is paralyzed, unable to make progress for fear of breaking something.",
+                options: [
+                    { principle: "Vision", text: "Give a motivational speech about the project's grand, long-term vision to try and inspire the team." },
+                    { principle: "Understanding", text: "Schedule more meetings with all stakeholders to get an even more detailed understanding of their individual needs." },
+                    { principle: "Clarity", text: "Organize a ruthless prioritization workshop with key decision-makers to identify and commit to the ONE most critical outcome for the next 30 days, explicitly tabling all other requests." },
+                    { principle: "Agility", text: "Encourage the team to just pick any small task and start working on it to create momentum." }
+                ],
+                answer: "Clarity",
+                feedback: "Exactly right. The antidote to overwhelming complexity is radical CLARITY. Trying to solve everything at once is impossible. By forcing a decision on the single most important thing, you untangle the knot, provide focus, and give the team permission to ignore the noise and make meaningful progress."
+            },
+            {
+                title: "The Ambiguity Challenge",
+                problem: "You've been asked to lead a new 'Future of Work' initiative. The goal is vague ('explore new models'), the budget is undefined, and the success metrics are non-existent. Leadership is looking to you to define the path.",
+                options: [
+                    { principle: "Agility", text: "Propose a series of small, time-boxed experiments (e.g., a one-week trial of a 4-day work week for one team) with clear learning goals for each, allowing the team to test hypotheses and gather real data to inform the path forward." },
+                    { principle: "Vision", text: "Spend the next three months in isolation writing a detailed 5-year vision document for the perfect Future of Work model." },
+                    { principle: "Clarity", text: "Go back to leadership and demand they provide you with a perfectly clear, non-ambiguous set of goals and KPIs before you begin any work." },
+                    { principle: "Understanding", text: "Launch a massive, company-wide survey to understand every employee's opinion on the future of work." }
+                ],
+                answer: "Agility",
+                feedback: "Perfect. Ambiguity cannot be solved with analysis; it must be solved with action. The most effective approach is AGILITY—running small, fast, low-risk experiments to learn. This approach replaces guessing with knowing, and allows the correct path to emerge from real-world data, not from a perfect-on-paper plan."
+            }
+        ];
+        
+        // --- Voice Over Logic ---
+        function populateVoiceList() {
+            voices = synth.getVoices();
+            voiceSelect.innerHTML = ''; // Clear previous options
+
+            // Prioritize higher-quality voices
+            const preferredVoices = voices.filter(voice => voice.name.includes('Google') || voice.name.includes('Microsoft'));
+            const otherVoices = voices.filter(voice => !preferredVoices.includes(voice));
+            const sortedVoices = [...preferredVoices, ...otherVoices];
+
+            sortedVoices.forEach(voice => {
+                const option = document.createElement('option');
+                option.textContent = `${voice.name} (${voice.lang})`;
+                option.setAttribute('data-lang', voice.lang);
+                option.setAttribute('data-name', voice.name);
+                voiceSelect.appendChild(option);
+            });
+
+            // Set selected voice from localStorage or default
+            const savedVoiceName = localStorage.getItem('vuca-voice');
+            if (savedVoiceName) {
+                const savedOption = Array.from(voiceSelect.options).find(opt => opt.textContent.includes(savedVoiceName));
+                if (savedOption) {
+                    savedOption.selected = true;
+                }
+            }
+        }
+
+        if (synth.onvoiceschanged !== undefined) {
+            synth.onvoiceschanged = populateVoiceList;
+        }
+
+        voiceSelect.onchange = () => {
+            const selectedOption = voiceSelect.selectedOptions[0];
+            const voiceName = selectedOption.getAttribute('data-name');
+            localStorage.setItem('vuca-voice', voiceName);
+        };
+        
+        function toggleSettings() {
+            const panel = document.getElementById('voice-select-panel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function playSceneAudio(sceneIndex, playButton) {
+            if (synth.speaking) {
+                synth.cancel();
+            }
+
+            const textToSpeak = sceneScripts[sceneIndex];
+            if (!textToSpeak) return;
+
+            currentUtterance = new SpeechSynthesisUtterance(textToSpeak);
+            const nextButton = playButton.parentElement.querySelector('.btn-primary');
+
+            const selectedVoiceName = localStorage.getItem('vuca-voice');
+            const selectedVoice = voices.find(voice => voice.name === selectedVoiceName);
+
+            currentUtterance.voice = selectedVoice || voices.find(voice => voice.default) || voices[0];
+            
+            playButton.disabled = true;
+            playButton.innerHTML = `<i data-lucide="volume-2" class="mr-2 h-5 w-5"></i>Playing...`;
+            lucide.createIcons();
+
+
+            currentUtterance.onend = () => {
+                if (nextButton) {
+                    nextButton.disabled = false;
+                }
+                playButton.disabled = false;
+                playButton.innerHTML = `<i data-lucide="play-circle" class="mr-2 h-5 w-5"></i>Play Narration`;
+                lucide.createIcons();
+                currentUtterance = null;
+            };
+            
+            currentUtterance.onerror = (event) => {
+                console.error('SpeechSynthesisUtterance.onerror', event);
+                console.warn('Speech synthesis failed. Enabling next button to allow user to proceed.');
+                playButton.disabled = false;
+                playButton.innerHTML = `<i data-lucide="play-circle" class="mr-2 h-5 w-5"></i>Play Narration`;
+                lucide.createIcons();
+                if (nextButton) nextButton.disabled = false;
+            };
+
+            synth.speak(currentUtterance);
+        }
+
+        // --- Core Navigation Logic ---
+        function updateScene() {
+            if (synth.speaking && currentUtterance) {
+                synth.cancel();
+            }
+            scenes.forEach((scene, index) => {
+                scene.classList.toggle('active', index === currentScene);
+            });
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const totalProgressSteps = 5 + quizQuestions.length + scenarios.length + 2;
+            const currentProgress = currentScene > 6 ? 6 + currentQuestionIndex + currentScenarioIndex : currentScene;
+            const progress = (currentProgress / totalProgressSteps) * 100;
+            progressBar.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function nextScene() {
+            if (currentScene < scenes.length - 1) {
+                currentScene++;
+                updateScene();
+            }
+        }
+
+        function prevScene() {
+            if (currentScene > 0) {
+                if(currentScene >= 8 && currentScene <= 11) { // Scenario scenes
+                    currentScene = 7; // Go back to scenario intro
+                } else {
+                    currentScene--;
+                }
+                updateScene();
+            }
+        }
+        
+        function restart() {
+            if (synth.speaking) synth.cancel();
+            currentScene = 0;
+            quizScore = 0;
+            scenarioScore = 0;
+            currentQuestionIndex = 0;
+            currentScenarioIndex = 0;
+            selectedTrait = '';
+            document.getElementById('poll-options').style.display = 'grid';
+            document.getElementById('action-plan-section').style.display = 'none';
+            document.getElementById('ai-feedback-section').style.display = 'none';
+            document.getElementById('feedback-content').style.display = 'none';
+            document.getElementById('action-plan-text').value = '';
+            document.getElementById('learner-name').value = '';
+            document.getElementById('scenario-scenes').innerHTML = '';
+            
+            scenes = document.querySelectorAll('.scene');
+            totalScenes = scenes.length;
+
+            updateScene();
+        }
+
+        // --- Scene 5: Action Plan ---
+        function selectTrait(trait) {
+            selectedTrait = trait;
+            document.getElementById('poll-options').style.display = 'none';
+            document.getElementById('selected-trait-title').textContent = trait;
+            document.getElementById('action-plan-section').style.display = 'block';
+        }
+
+        async function submitActionPlan() {
+            const planText = document.getElementById('action-plan-text').value;
+            if (planText.trim() === '') {
+                alert('Please enter a short action plan.');
+                return;
+            }
+            
+            document.getElementById('action-plan-section').style.display = 'none';
+            document.getElementById('ai-feedback-section').style.display = 'block';
+            document.getElementById('spinner-container').style.display = 'flex';
+            document.getElementById('feedback-content').style.display = 'none';
+
+            const prompt = `As a leadership coach, review the following action plan for developing the VUCA Prime trait of "${selectedTrait}". The user's plan is: "${planText}". Provide 2-3 concise, constructive, and actionable suggestions for how to make this plan even more effective. Frame the feedback positively.`;
+            
+            try {
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = ""; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
+                const result = await response.json();
+                
+                let feedbackText = "Great start! Here are a few ideas to make your plan even stronger...";
+                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts.length > 0) {
+                    feedbackText = result.candidates[0].content.parts[0].text;
+                }
+                document.getElementById('ai-feedback-text').innerHTML = feedbackText.replace(/\n/g, '<br>');
+
+            } catch (error) {
+                console.error("Error fetching AI feedback:", error);
+                document.getElementById('ai-feedback-text').textContent = "Could not load AI feedback at this time. Let's proceed to the quiz!";
+            } finally {
+                document.getElementById('spinner-container').style.display = 'none';
+                document.getElementById('feedback-content').style.display = 'block';
+            }
+        }
+
+        // --- Scene 6: Quiz ---
+        function startQuiz() {
+            currentScene = 6;
+            currentQuestionIndex = 0;
+            quizScore = 0;
+            displayQuestion();
+            updateScene();
+        }
+
+        function displayQuestion() {
+            const quizContainer = document.getElementById('quiz-container');
+            const feedbackEl = document.getElementById('quiz-feedback');
+            const nextBtn = document.getElementById('next-question-btn');
+            
+            feedbackEl.innerHTML = '';
+            nextBtn.classList.add('hidden');
+            
+            if (currentQuestionIndex < quizQuestions.length) {
+                const q = quizQuestions[currentQuestionIndex];
+                let optionsHtml = q.options.map(option => 
+                    `<button class="option-btn p-4 w-full text-left rounded-lg" onclick="checkAnswer(this, '${option}')">${option}</button>`
+                ).join('');
+                quizContainer.innerHTML = `
+                    <p class="text-lg font-semibold mb-4">${currentQuestionIndex + 1}. ${q.question}</p>
+                    <div class="space-y-3">${optionsHtml}</div>
+                `;
+            } else {
+                currentScene = 7; // Move to scenario intro
+                updateScene();
+            }
+        }
+
+        function checkAnswer(button, selectedOption) {
+            const q = quizQuestions[currentQuestionIndex];
+            const feedbackEl = document.getElementById('quiz-feedback');
+            const nextBtn = document.getElementById('next-question-btn');
+            const optionButtons = button.parentElement.children;
+
+            let isCorrect = selectedOption === q.answer;
+
+            if (isCorrect) {
+                quizScore++;
+                feedbackEl.textContent = 'Correct!';
+                feedbackEl.className = 'mt-4 text-center font-semibold text-green-600';
+            } else {
+                feedbackEl.innerHTML = `Incorrect. The correct answer is <strong>${q.answer}</strong>.`;
+                feedbackEl.className = 'mt-4 text-center font-semibold text-red-600';
+            }
+
+            for(let btn of optionButtons){
+                btn.disabled = true;
+                if (btn.textContent === q.answer) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === selectedOption) {
+                    btn.classList.add('incorrect');
+                }
+            }
+            
+            nextBtn.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            displayQuestion();
+        }
+
+        // --- Scene 7: Scenarios ---
+        function startScenarios() {
+            currentScenarioIndex = 0;
+            scenarioScore = 0;
+            buildScenarioScenes();
+            scenes = document.querySelectorAll('.scene');
+            currentScene = 8;
+            updateScene();
+        }
+
+        function buildScenarioScenes() {
+            const container = document.getElementById('scenario-scenes');
+            container.innerHTML = '';
+            scenarios.forEach((s, index) => {
+                const sceneIndex = 8 + index;
+                const optionsHtml = s.options.map(opt => 
+                    `<button class="option-btn p-4 w-full text-left rounded-lg" onclick="checkScenarioAnswer(this, '${opt.principle}', ${index})"><strong>${opt.principle}:</strong> ${opt.text}</button>`
+                ).join('');
+
+                container.innerHTML += `
+                    <div id="scene-${sceneIndex}" class="scene flex-col items-center justify-center p-8">
+                        <div class="card p-8 md:p-12 w-full">
+                            <h2 class="text-xl md:text-2xl font-bold mb-2 text-gray-900">${s.title}</h2>
+                            <p class="text-gray-600 mb-6 max-w-2xl mx-auto">${s.problem}</p>
+                            <div class="space-y-3">${optionsHtml}</div>
+                            <div id="scenario-feedback-${index}" class="mt-6 text-left"></div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function checkScenarioAnswer(button, chosenPrinciple, scenarioIndex) {
+            const scenario = scenarios[scenarioIndex];
+            const feedbackEl = document.getElementById(`scenario-feedback-${scenarioIndex}`);
+            const optionButtons = button.parentElement.children;
+            const isCorrect = chosenPrinciple === scenario.answer;
+
+            if (isCorrect) {
+                scenarioScore++;
+                button.classList.add('correct');
+                feedbackEl.innerHTML = `<p class="font-semibold text-green-700">Correct!</p><p class="text-gray-600 mt-2">${scenario.feedback}</p>`;
+            } else {
+                button.classList.add('incorrect');
+                feedbackEl.innerHTML = `<p class="font-semibold text-red-700">Not quite.</p><p class="text-gray-600 mt-2">${scenario.feedback}</p>`;
+                 for(let btn of optionButtons){
+                     if(btn.textContent.startsWith(scenario.answer)){
+                         btn.classList.add('correct');
+                     }
+                 }
+            }
+
+            for(let btn of optionButtons){
+                btn.disabled = true;
+            }
+
+            const nextButton = document.createElement('button');
+            nextButton.textContent = (scenarioIndex < scenarios.length - 1) ? 'Next Scenario' : 'See My Results';
+            nextButton.className = 'btn btn-primary mt-4';
+            nextButton.onclick = () => {
+                if (scenarioIndex < scenarios.length - 1) {
+                    currentScene++;
+                    updateScene();
+                } else {
+                    showResults();
+                }
+            };
+            feedbackEl.appendChild(nextButton);
+        }
+
+        // --- Scene 8: Results ---
+        function showResults() {
+            currentScene = 8 + scenarios.length;
+            const totalQuestions = quizQuestions.length + scenarios.length;
+            const totalScore = quizScore + scenarioScore;
+            const finalPercentage = Math.round((totalScore / totalQuestions) * 100);
+            
+            document.getElementById('final-score').textContent = finalPercentage;
+
+            if (finalPercentage >= 80) {
+                document.getElementById('certificate-unlocked').style.display = 'block';
+                document.getElementById('certificate-locked').style.display = 'none';
+            } else {
+                document.getElementById('certificate-unlocked').style.display = 'none';
+                document.getElementById('certificate-locked').style.display = 'block';
+            }
+            updateScene();
+        }
+
+        // --- Scene 9: Certificate ---
+        function generateCertificate() {
+            const learnerName = document.getElementById('learner-name').value;
+            if (learnerName.trim() === '') {
+                alert('Please enter your name.');
+                return;
+            }
+            
+            document.getElementById('cert-name').textContent = learnerName;
+            
+            const today = new Date();
+            const dateString = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('cert-date').textContent = dateString;
+
+            const serialNumber = `E8-${Date.now()}-${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
+            document.getElementById('cert-serial').textContent = serialNumber;
+
+            currentScene = 9 + scenarios.length;
+            updateScene();
+        }
+
+        function downloadCertificate() {
+            const certificateElement = document.getElementById('certificate');
+            const learnerName = document.getElementById('cert-name').textContent;
+            const filename = `Elev8_VUCA_Certificate_${learnerName.replace(/ /g, '_')}.png`;
+
+            html2canvas(certificateElement, { 
+                scale: 2,
+                useCORS: true,
+                backgroundColor: null
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = filename;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            populateVoiceList(); 
+            scenes = document.querySelectorAll('.scene');
+            lucide.createIcons();
+            updateScene();
+        });
+    </script>
 </body>
 </html>
