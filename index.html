@@ -1,438 +1,435 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecureGuard Solutions - Your Trusted Security Partner</title>
-    <style>
-        :root {
-            --primary-color: #004d40; /* Dark Teal */
-            --secondary-color: #00796b; /* Medium Teal */
-            --accent-color: #ffb300; /* Amber */
-            --text-color: #333;
-            --light-bg: #f4f4f4;
-            --white: #fff;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dzotosandandstone — Sand & Stone Quotes (Protea Glen)</title>
+  <meta name="description" content="We have the best low possible prices on sand with free delivery (min 2m³) around Protea Glen. Get instant quotes for river sand, building sand, plaster sand, concrete mix & stone, and cement."/>
+  <style>
+    :root{
+      --bg:#0f172a;           /* slate-900 */
+      --card:#111827;         /* gray-900 */
+      --muted:#94a3b8;        /* slate-400 */
+      --text:#e5e7eb;         /* gray-200 */
+      --accent:#22c55e;       /* green-500 */
+      --accent-2:#10b981;     /* emerald-500 */
+      --danger:#ef4444;       /* red-500 */
+      --warning:#f59e0b;      /* amber-500 */
+      --border:#1f2937;       /* gray-800 */
+      --chip:#0b1223;         /* dark chip */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",sans-serif;
+      background:linear-gradient(180deg,#0b1223 0%, #0f172a 50%, #0b1223 100%);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .container{max-width:1200px;margin:0 auto;padding:24px}
+    header{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter:saturate(160%) blur(8px);
+      background-color:rgba(15,23,42,.7);
+      border-bottom:1px solid var(--border);
+    }
+    .nav{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:14px 24px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.5px}
+    .brand .logo{
+      width:38px;height:38px;border-radius:12px;
+      background:conic-gradient(from 210deg,var(--accent),#3b82f6,#06b6d4);filter:saturate(130%);
+      box-shadow:0 8px 24px rgba(34,197,94,.25);
+    }
+    .cta{display:flex;gap:10px;align-items:center}
+    .btn{border:1px solid var(--border);padding:10px 14px;border-radius:12px;cursor:pointer;background:#0b1223;color:var(--text)}
+    .btn:hover{border-color:#334155}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#062b18;font-weight:700}
+    .btn.ghost{background:transparent}
 
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            color: var(--text-color);
-            line-height: 1.6;
-        }
+    .hero{padding:40px 24px}
+    .grid{display:grid;gap:16px}
+    .hero-wrap{display:grid;gap:16px;grid-template-columns:1.2fr .8fr}
+    @media(max-width:900px){.hero-wrap{grid-template-columns:1fr}}
+    .card{background:linear-gradient(180deg,#0c1326, #0b1223);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .headline{font-size:clamp(24px,4vw,42px);line-height:1.1;margin:0 0 10px;font-weight:900}
+    .sub{color:var(--muted);margin:0 0 16px}
+    .motto{font-size:18px;background:#041218;border:1px solid #0e2e1a;padding:14px;border-radius:14px}
+    .motto mark{background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900}
 
-        header {
-            background: var(--primary-color);
-            color: var(--white);
-            padding: 1rem 0;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .chip{background:var(--chip);border:1px solid var(--border);padding:8px 10px;border-radius:999px;color:var(--muted);font-size:12px}
 
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
+    .products{grid-template-columns:repeat(12,1fr)}
+    .products .left{grid-column:span 8}
+    .products .right{grid-column:span 4}
+    @media(max-width:1000px){
+      .products{grid-template-columns:1fr}
+      .products .left,.products .right{grid-column:span 1}
+    }
 
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-        }
+    .list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    @media(max-width:700px){.list{grid-template-columns:1fr}}
 
-        nav ul li {
-            margin: 0 15px;
-        }
+    .product{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:rgba(255,255,255,.02);border:1px solid var(--border);padding:14px;border-radius:16px}
+    .icon{width:42px;height:42px;border-radius:12px;background:#0a1222;display:grid;place-items:center;border:1px solid var(--border)}
+    .product h4{margin:0 0 4px;font-size:16px}
+    .product .meta{font-size:12px;color:var(--muted)}
+    .qty{display:flex;align-items:center;gap:8px}
+    .qty input{width:80px;padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:#0a1222;color:var(--text)}
 
-        nav ul li a {
-            color: var(--white);
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
+    .quote-panel{position:sticky;top:86px}
+    .quote-panel h3{margin:0 0 10px}
+    .items{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+    .row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center}
+    .row .rm{background:transparent;border:1px solid var(--border);padding:6px 8px;border-radius:10px;cursor:pointer;color:var(--muted)}
 
-        nav ul li a:hover {
-            color: var(--accent-color);
-        }
+    .totals{border-top:1px dashed var(--border);margin-top:10px;padding-top:10px}
+    .totals .line{display:flex;justify-content:space-between;margin:6px 0}
+    .totals .grand{font-weight:900;font-size:18px}
+    .note{font-size:12px;color:var(--muted)}
 
-        .hero {
-            background: url('https://via.placeholder.com/1500x600/004d40/ffffff?text=Secure+Your+Future') no-repeat center center/cover;
-            color: var(--white);
-            text-align: center;
-            padding: 80px 20px;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+    .details{display:grid;gap:8px;margin-top:12px}
+    .details input,.details textarea, .select{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:#0a1222;color:var(--text)}
+    .details label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
 
-        .hero h2 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-        }
+    .free{color:var(--accent)}
+    .warn{color:var(--warning)}
+    .danger{color:var(--danger)}
 
-        .hero p {
-            font-size: 1.5rem;
-            max-width: 800px;
-            margin-bottom: 30px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
-        }
+    .footer{margin:40px 0 20px;color:var(--muted);font-size:13px;text-align:center}
 
-        .btn {
-            background: var(--accent-color);
-            color: var(--primary-color);
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-
-        .btn:hover {
-            background: #ffa000; /* Darker Amber */
-            transform: translateY(-2px);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.8rem;
-            margin-bottom: 40px;
-            color: var(--primary-color);
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            width: 80px;
-            height: 4px;
-            background: var(--accent-color);
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .service-item {
-            background: var(--white);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .service-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-
-        .service-item i {
-            font-size: 3rem;
-            color: var(--secondary-color);
-            margin-bottom: 15px;
-        }
-
-        .service-item h3 {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-
-        .about-content {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .about-content img {
-            max-width: 100%;
-            flex: 1 1 400px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .about-text {
-            flex: 1 1 500px;
-        }
-
-        .about-text h3 {
-            font-size: 2.2rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        .contact-form {
-            background: var(--white);
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .contact-form label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .contact-form input[type="text"],
-        .contact-form input[type="email"],
-        .contact-form textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            box-sizing: border-box; /* Include padding and border in the element's total width and height */
-        }
-
-        .contact-form textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .contact-form button {
-            background: var(--secondary-color);
-            color: var(--white);
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            width: 100%;
-        }
-
-        .contact-form button:hover {
-            background: #005f56; /* Darker secondary */
-        }
-
-        footer {
-            background: var(--primary-color);
-            color: var(--white);
-            text-align: center;
-            padding: 1.5rem 0;
-            margin-top: 50px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
-            }
-
-            nav ul {
-                flex-direction: column;
-                padding-top: 10px;
-            }
-
-            nav ul li {
-                margin: 5px 0;
-            }
-
-            .hero h2 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1.2rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .about-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .about-content img {
-                max-width: 80%;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    /* Print styling for PDF-like quotes */
+    @media print{
+      header,.hero .right,.footer{display:none !important}
+      body{background:#fff;color:#000}
+      .card,.product,.btn{box-shadow:none}
+      .container{max-width:100%;padding:0}
+      .print-only{display:block}
+      .no-print{display:none}
+      .quote-sheet{padding:24px}
+      .quote-sheet h1{font-size:22px;margin:0}
+      .quote-sheet .muted{color:#333}
+      .border{border:1px solid #ddd;border-radius:8px;padding:12px;margin-top:10px}
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>SecureGuard Solutions</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header>
+    <div class="nav container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:18px;line-height:1;font-weight:900">Dzotosandandstone</div>
+          <div style="font-size:12px;color:var(--muted)">Sand • Stone • Cement — Protea Glen</div>
+        </div>
+      </div>
+      <div class="cta">
+        <button class="btn ghost" id="btn-whatsapp">WhatsApp</button>
+        <button class="btn primary" id="btn-print">Download Quote (PDF)</button>
+      </div>
+    </div>
+  </header>
 
-    <main>
-        <section id="home" class="hero">
-            <h2>Your Trust, Our Priority. Uncompromised Security.</h2>
-            <p>Providing cutting-edge security solutions for homes, businesses, and government entities.</p>
-            <a href="#contact" class="btn">Get a Free Consultation</a>
-        </section>
+  <main class="container hero">
+    <div class="hero-wrap">
+      <section class="card">
+        <h1 class="headline">Bulk Sand & Stone, Delivered Fast in Protea Glen</h1>
+        <p class="sub">Instant quotes. Fair prices. Local delivery.</p>
+        <p class="motto">
+          <strong>Motto:</strong>
+          <br/>
+          <q>We have the best low possible prices on sand with free delivery, only if you buy any 2 metre of sand listed below around PROTEA GLEN. We offer : 1. Concrete mix and stone 2. River sand 3. Building sand 4. Plaster sand 5. Cement.</q>
+        </p>
+        <div class="chips">
+          <span class="chip">Free delivery ≥ 2m³ (sand)</span>
+          <span class="chip">Same‑day where possible</span>
+          <span class="chip">Pay EFT / Cash on delivery</span>
+        </div>
+      </section>
+      <aside class="card">
+        <h3 style="margin:0 0 6px">Need a custom mixture?</h3>
+        <p class="sub" style="margin:0">Tell us what you’re building and we’ll help pick the right sand/stone ratio.</p>
+        <div class="details" style="margin-top:14px">
+          <label>Quick message</label>
+          <textarea id="quick-msg" rows="4" placeholder="Hi Dzotosandandstone, I need 3m³ building sand delivered to Protea Glen Ext ..."></textarea>
+          <button class="btn" id="btn-send-msg">Send message</button>
+        </div>
+      </aside>
+    </div>
 
-        <section id="services" class="container">
-            <h2 class="section-title">Our Security Services</h2>
-            <div class="services-grid">
-                <div class="service-item">
-                    <i class="fas fa-camera"></i>
-                    <h3>CCTV Surveillance</h3>
-                    <p>Advanced surveillance systems with remote monitoring and smart analytics.</p>
-                </div>
-                <div class="service-item">
-                    <i class="fas fa-shield-alt"></i>
-                    <h3>Alarm Systems</h3>
-                    <p>Reliable and responsive alarm systems for ultimate protection against intruders.</p>
-                </div>
-                <div class="service-item">
-                    <i class="fas fa-lock"></i>
-                    <h3>Access Control</h3>
-                    <p>Secure access solutions including biometrics, card readers, and keypads.</p>
-                </div>
-                <div class="service-item">
-                    <i class="fas fa-user-secret"></i>
-                    <h3>Manned Guarding</h3>
-                    <p>Highly trained security personnel providing vigilant on-site protection.</p>
-                </div>
-                <div class="service-item">
-                    <i class="fas fa-network-wired"></i>
-                    <h3>Cybersecurity Solutions</h3>
-                    <p>Protecting your digital assets from evolving cyber threats.</p>
-                </div>
-                <div class="service-item">
-                    <i class="fas fa-car-alt"></i>
-                    <h3>Patrol Services</h3>
-                    <p>Regular and random patrols to deter crime and ensure peace of mind.</p>
-                </div>
+    <section class="grid products" style="margin-top:22px">
+      <div class="left">
+        <div class="card" style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+            <h2 style="margin:0">Standard Products</h2>
+            <div class="chip">Prices in ZAR (editable)</div>
+          </div>
+        </div>
+
+        <div class="list" id="product-list"><!-- populated by JS --></div>
+      </div>
+
+      <aside class="right">
+        <div class="card quote-panel" id="quote-card">
+          <h3>Quote Builder</h3>
+          <div class="note">Minimum for <span class="free">free delivery</span>: any <strong>2 m³</strong> of sand (River, Building, or Plaster) within Protea Glen.</div>
+          <div class="items" id="quote-items"></div>
+          <div class="totals">
+            <div class="line"><span>Subtotal</span><strong id="subtotal">R0</strong></div>
+            <div class="line"><span>Delivery</span><strong id="delivery">R0</strong></div>
+            <div class="line grand"><span>Total</span><strong id="grand">R0</strong></div>
+            <div class="note" id="delivery-note"></div>
+          </div>
+          <div class="details">
+            <div>
+              <label for="cust-name">Your name</label>
+              <input id="cust-name" placeholder="e.g. Thabo M."/>
             </div>
-        </section>
-
-        <section id="about" class="container">
-            <h2 class="section-title">About SecureGuard Solutions</h2>
-            <div class="about-content">
-                <img src="https://via.placeholder.com/600x400/00796b/ffffff?text=Our+Team" alt="SecureGuard Team">
-                <div class="about-text">
-                    <h3>Pioneering Security Excellence Since 2005</h3>
-                    <p>SecureGuard Solutions has been at the forefront of the security industry for nearly two decades. We are dedicated to providing comprehensive, tailored security services that meet the unique needs of our diverse clientele. Our team of certified professionals is committed to integrity, innovation, and client satisfaction.</p>
-                    <p>We leverage the latest technology and industry best practices to deliver solutions that not only protect assets but also provide invaluable peace of mind. Your safety is our mission.</p>
-                </div>
+            <div>
+              <label for="cust-phone">Phone / WhatsApp</label>
+              <input id="cust-phone" placeholder="e.g. 071 234 5678"/>
             </div>
-        </section>
-
-        <section id="contact" class="container">
-            <h2 class="section-title">Contact Us</h2>
-            <div class="contact-form">
-                <p style="text-align: center; margin-bottom: 30px;">Have questions or need a custom security assessment? Fill out the form below!</p>
-                <form id="contactForm">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-
-                    <label for="phone">Phone (Optional):</label>
-                    <input type="text" id="phone" name="phone">
-
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" required></textarea>
-
-                    <button type="submit">Send Message</button>
-                </form>
-                <div id="formStatus" style="margin-top: 20px; text-align: center; font-weight: bold;"></div>
+            <div>
+              <label for="cust-area">Delivery area</label>
+              <input id="cust-area" placeholder="Protea Glen Ext 11"/>
             </div>
-        </section>
-    </main>
+            <div>
+              <label for="cust-notes">Notes (optional)</label>
+              <textarea id="cust-notes" rows="3" placeholder="Gate code, tipping spot, preferred time, etc."></textarea>
+            </div>
+            <button class="btn primary" id="btn-confirm">Confirm & Save Quote</button>
+          </div>
+        </div>
+      </aside>
+    </section>
 
-    <footer>
-        <p>&copy; 2025 SecureGuard Solutions. All rights reserved.</p>
-    </footer>
+    <section class="footer">
+      © <span id="year"></span> Dzotosandandstone · Protea Glen · <span class="muted">All rights reserved.</span>
+      <div style="margin-top:6px">Call/WhatsApp: <a href="#" id="footer-wa">+27 71 234 5678</a> · Email: <a href="#" id="footer-email">sales@dzotosandandstone.co.za</a></div>
+    </section>
+  </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const contactForm = document.getElementById('contactForm');
-            const formStatus = document.getElementById('formStatus');
+  <!-- Hidden printable quote sheet -->
+  <section class="quote-sheet print-only">
+    <div class="border">
+      <h1>Dzotosandandstone</h1>
+      <div class="muted">Sand • Stone • Cement — Protea Glen</div>
+      <div style="margin-top:6px">Quote #: <span id="print-quote-id"></span> · Date: <span id="print-date"></span></div>
+      <div style="margin-top:6px">Customer: <span id="print-cust"></span> · Phone: <span id="print-phone"></span></div>
+      <div style="margin-top:6px">Delivery: <span id="print-area"></span></div>
+    </div>
+    <div class="border" id="print-lines"></div>
+    <div class="border">
+      <div>Subtotal: <strong id="print-subtotal"></strong></div>
+      <div>Delivery: <strong id="print-delivery"></strong></div>
+      <div style="font-size:20px;font-weight:900;margin-top:6px">Total: <span id="print-grand"></span></div>
+      <div class="muted" style="margin-top:6px">Motto: “We have the best low possible prices on sand with free delivery, only if you buy any 2 metre of sand listed below around PROTEA GLEN.”</div>
+    </div>
+  </section>
 
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(event) {
-                    event.preventDefault(); // Prevent default form submission
+  <script>
+    // --------- Data (easy to edit) ---------
+    const PRODUCTS = [
+      { id:'concrete_mix', name:'Concrete mix & stone', unit:'m³', price:650, icon:'🪨', type:'other' },
+      { id:'river_sand',   name:'River sand',          unit:'m³', price:450, icon:'🌊', type:'sand' },
+      { id:'building_sand',name:'Building sand',       unit:'m³', price:400, icon:'🏗️', type:'sand' },
+      { id:'plaster_sand', name:'Plaster sand',        unit:'m³', price:420, icon:'🧱', type:'sand' },
+      { id:'cement',       name:'Cement (50kg bag)',   unit:'bag',price:95,  icon:'🧪', type:'other' },
+    ];
 
-                    // Basic validation
-                    const name = document.getElementById('name').value.trim();
-                    const email = document.getElementById('email').value.trim();
-                    const message = document.getElementById('message').value.trim();
+    const DELIVERY_FEE = 250; // applies if < 2m³ of sand or outside Protea Glen
+    const FREE_DELIVERY_MIN_M3 = 2; // free delivery threshold (sand only)
 
-                    if (name === '' || email === '' || message === '') {
-                        formStatus.style.color = 'red';
-                        formStatus.textContent = 'Please fill in all required fields.';
-                        return;
-                    }
+    const STATE = {
+      cart: JSON.parse(localStorage.getItem('dzoto_cart')||'[]'),
+      customer: JSON.parse(localStorage.getItem('dzoto_customer')||'{}'),
+      quoteId: localStorage.getItem('dzoto_quoteId') || null,
+    };
 
-                    if (!validateEmail(email)) {
-                        formStatus.style.color = 'red';
-                        formStatus.textContent = 'Please enter a valid email address.';
-                        return;
-                    }
+    const fmt = n => `R${(n||0).toLocaleString('en-ZA',{minimumFractionDigits:0})}`;
 
-                    // In a real-world scenario, you would send this data to a server
-                    // using fetch() or XMLHttpRequest. For this example, we'll just simulate success.
+    function save(){
+      localStorage.setItem('dzoto_cart', JSON.stringify(STATE.cart));
+      localStorage.setItem('dzoto_customer', JSON.stringify(STATE.customer));
+      if(STATE.quoteId) localStorage.setItem('dzoto_quoteId', STATE.quoteId);
+    }
 
-                    // Simulate API call
-                    formStatus.style.color = 'var(--primary-color)';
-                    formStatus.textContent = 'Sending message...';
+    function productById(id){return PRODUCTS.find(p=>p.id===id)}
 
-                    setTimeout(() => {
-                        formStatus.style.color = 'green';
-                        formStatus.textContent = 'Thank you for your message! We will get back to you soon.';
-                        contactForm.reset(); // Clear the form
-                    }, 2000); // Simulate network delay
-                });
-            }
-
-            function validateEmail(email) {
-                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(String(email).toLowerCase());
-            }
-
-            // Smooth scrolling for navigation links
-            document.querySelectorAll('nav a').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
+    // --------- UI Builders ---------
+    function renderProducts(){
+      const list = document.getElementById('product-list');
+      list.innerHTML = '';
+      PRODUCTS.forEach(p=>{
+        const card = document.createElement('div');
+        card.className = 'product';
+        card.innerHTML = `
+          <div class="icon">${p.icon}</div>
+          <div>
+            <h4>${p.name}</h4>
+            <div class="meta">${p.unit === 'm³' ? 'Per cubic metre' : 'Per 50kg bag'} · <strong>${fmt(p.price)}</strong> / ${p.unit}</div>
+          </div>
+          <div class="qty">
+            <input type="number" min="${p.unit==='m³'?0.5:1}" step="${p.unit==='m³'?0.5:1}" value="${p.unit==='m³'?1:10}" aria-label="Quantity" />
+            <button class="btn" aria-label="Add to quote">Add</button>
+          </div>
+        `;
+        const input = card.querySelector('input');
+        card.querySelector('button').addEventListener('click',()=>{
+          const qty = parseFloat(input.value);
+          if(!qty || qty<=0) return;
+          const existing = STATE.cart.find(i=>i.id===p.id);
+          if(existing) existing.qty += qty; else STATE.cart.push({id:p.id, qty});
+          save();
+          renderQuote();
         });
-    </script>
+        list.appendChild(card);
+      })
+    }
+
+    function calcTotals(){
+      let subtotal = 0;
+      let sandM3 = 0;
+      STATE.cart.forEach(it=>{
+        const p = productById(it.id);
+        subtotal += p.price * it.qty;
+        if(p.type==='sand') sandM3 += (p.unit==='m³'? it.qty : 0);
+      });
+      const area = (STATE.customer.area||'').toLowerCase();
+      const inProteaGlen = area.includes('protea glen');
+      const qualifiesFree = sandM3 >= FREE_DELIVERY_MIN_M3 && inProteaGlen;
+      const delivery = qualifiesFree ? 0 : (STATE.cart.length? DELIVERY_FEE : 0);
+      return {subtotal, delivery, total: subtotal + delivery, sandM3, inProteaGlen, qualifiesFree};
+    }
+
+    function renderQuote(){
+      const host = document.getElementById('quote-items');
+      host.innerHTML = '';
+      STATE.cart.forEach((it,idx)=>{
+        const p = productById(it.id);
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML = `
+          <div>${p.name} <span class="meta">(${p.unit})</span></div>
+          <input type="number" min="${p.unit==='m³'?0.5:1}" step="${p.unit==='m³'?0.5:1}" value="${it.qty}" aria-label="Qty"/>
+          <div>${fmt(p.price * it.qty)}</div>
+          <button class="rm" title="Remove">✕</button>
+        `;
+        row.querySelector('input').addEventListener('input', (e)=>{
+          const v = parseFloat(e.target.value)||0;
+          STATE.cart[idx].qty = v;
+          save();
+          renderTotals();
+        });
+        row.querySelector('.rm').addEventListener('click',()=>{
+          STATE.cart.splice(idx,1);
+          save();
+          renderQuote();
+        });
+        host.appendChild(row);
+      });
+      renderTotals();
+    }
+
+    function renderTotals(){
+      const t = calcTotals();
+      document.getElementById('subtotal').textContent = fmt(t.subtotal);
+      document.getElementById('delivery').textContent = fmt(t.delivery);
+      document.getElementById('grand').textContent = fmt(t.total);
+      const note = document.getElementById('delivery-note');
+      if(!STATE.cart.length){
+        note.textContent = '';
+      } else if(t.qualifiesFree){
+        note.innerHTML = `✅ Free delivery applied in Protea Glen (sand total: ${t.sandM3} m³)`;
+      } else if(!t.inProteaGlen){
+        note.innerHTML = `ℹ️ Delivery address not in Protea Glen — flat fee ${fmt(DELIVERY_FEE)} applies.`;
+      } else {
+        note.innerHTML = `ℹ️ Add sand to reach <strong>${FREE_DELIVERY_MIN_M3} m³</strong> for free delivery in Protea Glen (current sand total: ${t.sandM3} m³).`;
+      }
+    }
+
+    // --------- Customer details & actions ---------
+    function wireDetails(){
+      const fields = [
+        ['cust-name','name'],['cust-phone','phone'],['cust-area','area'],['cust-notes','notes']
+      ];
+      fields.forEach(([id,key])=>{
+        const el = document.getElementById(id);
+        el.value = STATE.customer[key]||'';
+        el.addEventListener('input',()=>{STATE.customer[key]=el.value; save(); renderTotals();})
+      })
+
+      document.getElementById('btn-confirm').addEventListener('click',()=>{
+        if(!STATE.cart.length){ alert('Please add at least one product.'); return; }
+        if(!STATE.customer.name || !STATE.customer.phone || !STATE.customer.area){
+          alert('Please fill in your name, phone, and delivery area.');
+          return;
+        }
+        // Assign a quote number
+        if(!STATE.quoteId){
+          const dt = new Date();
+          STATE.quoteId = 'DZ-' + dt.getFullYear().toString().slice(-2) + (dt.getMonth()+1).toString().padStart(2,'0') + '-' + Math.random().toString(36).slice(2,7).toUpperCase();
+        }
+        save();
+        alert('Quote saved. You can now download/print or send via WhatsApp.');
+        syncPrintSheet();
+      });
+
+      document.getElementById('btn-print').addEventListener('click',()=>{
+        syncPrintSheet();
+        window.print();
+      });
+
+      document.getElementById('btn-whatsapp').addEventListener('click',()=>{
+        const t = calcTotals();
+        const lines = STATE.cart.map(it=>{
+          const p = productById(it.id);
+          return `• ${p.name}: ${it.qty} ${p.unit} = ${fmt(p.price*it.qty)}`;
+        }).join('%0A');
+        const msg = `Hello Dzotosandandstone,%0A%0AQuote request:%0A${lines}%0A%0ASubtotal: ${fmt(t.subtotal)}%0ADelivery: ${fmt(t.delivery)}%0ATotal: ${fmt(t.total)}%0A%0AName: ${encodeURIComponent(STATE.customer.name||'')}
+Phone: ${encodeURIComponent(STATE.customer.phone||'')}
+Area: ${encodeURIComponent(STATE.customer.area||'')}`
+          .replace(/\n/g,'%0A');
+        const wa = `https://wa.me/27712345678?text=${msg}`;
+        window.open(wa,'_blank');
+      });
+
+      document.getElementById('btn-send-msg').addEventListener('click',()=>{
+        const text = encodeURIComponent(document.getElementById('quick-msg').value||'Hi, I need a quote.');
+        window.open(`https://wa.me/27712345678?text=${text}`,'_blank');
+      });
+
+      // Footer links
+      document.getElementById('footer-wa').href = 'https://wa.me/27712345678';
+      document.getElementById('footer-email').href = 'mailto:sales@dzotosandandstone.co.za';
+    }
+
+    function syncPrintSheet(){
+      const t = calcTotals();
+      document.getElementById('print-quote-id').textContent = STATE.quoteId || '-';
+      const dt = new Date();
+      document.getElementById('print-date').textContent = dt.toLocaleDateString('en-ZA');
+      document.getElementById('print-cust').textContent = STATE.customer.name||'-';
+      document.getElementById('print-phone').textContent = STATE.customer.phone||'-';
+      document.getElementById('print-area').textContent = STATE.customer.area||'-';
+      document.getElementById('print-subtotal').textContent = fmt(t.subtotal);
+      document.getElementById('print-delivery').textContent = fmt(t.delivery);
+      document.getElementById('print-grand').textContent = fmt(t.total);
+      const host = document.getElementById('print-lines');
+      host.innerHTML = '<strong>Items</strong><br/>' + STATE.cart.map(it=>{
+        const p = productById(it.id);
+        return `${p.name} — ${it.qty} ${p.unit} — ${fmt(p.price*it.qty)}`
+      }).join('<br/>');
+    }
+
+    // --------- Boot ---------
+    function boot(){
+      document.getElementById('year').textContent = new Date().getFullYear();
+      renderProducts();
+      renderQuote();
+      wireDetails();
+    }
+    boot();
+  </script>
 </body>
 </html>
